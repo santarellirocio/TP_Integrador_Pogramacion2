@@ -12,14 +12,14 @@ public class Categoria extends Base {
     private String descripcion;
     private List<Producto> productos;// agregacion- relacion 1:N - una categoria tiene muchos productos
 
-    // Constructor
+    // Constructores
     public Categoria(Long id, String nombre, String descripcion) {
         super(id);  // La llamada a super() debe ser la primera instrucción del constructor.
         setNombre(nombre);
         setDescripcion(descripcion);
         this.productos = new ArrayList<>();
     }
-
+ 
     // Getters y Setters
     public String getNombre() {
         return nombre;

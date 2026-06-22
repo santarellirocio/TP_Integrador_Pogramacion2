@@ -27,7 +27,29 @@ public class Usuario extends Base {
         setRol(rol);
         this.pedidos = new ArrayList<>();
     }
+       
 
+    // Getters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+    
     //setters
 
     public void setNombre(String nombre) {
@@ -70,32 +92,12 @@ public class Usuario extends Base {
             throw new IllegalArgumentException("el rol no puede ser nulo");
         }
         this.rol = rol;
+        this.pedidos = new ArrayList<>();
     }
        
-
-    // Getters
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public List<Pedido> getPedidos() {
-        return pedidos;
-    }
-    
     // Metodo para añadir pedidos
     public void agregarPedido(Pedido pedido) {
+        pedidos.add(pedido);
         //validacion
         if (pedido == null){
             throw new IllegalArgumentException ("El pedido no puede ser nulo");

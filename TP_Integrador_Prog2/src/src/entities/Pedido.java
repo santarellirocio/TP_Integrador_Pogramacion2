@@ -75,9 +75,6 @@ public class Pedido extends Base implements Calculable {
         this.usuario = usuario;
     }
     
-    
-    
-    
     // Sobrescritura del método de la interface
     // Calcula el total sumando los subtotales de cada detalle
     @Override

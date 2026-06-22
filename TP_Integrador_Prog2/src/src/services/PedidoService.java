@@ -19,11 +19,28 @@ import src.exceptions.StockInsuficienteException;
 public class PedidoService {
     // Aquí es donde "vive" la base de datos en memoria
     private List<Pedido> pedidos = new ArrayList<>();
+    
+    // Devuelve todos los pedidos disponibles
+    public List<Pedido> listar() {
+        List<Pedido> activos = new ArrayList<>();
+        for (Pedido p : pedidos) {
+            if (!p.isEliminado()) activos.add(p);
+        }
+        return activos;
+    }
 
-    public void guardar(Pedido pedido) {
+    // Agrega un pedido nuevo a la lista
+    public void crear(Pedido pedido) {
         pedidos.add(pedido);
     }
 
+    // Actualiza la información de un pedido existente
+    public void editar(Pedido pedidoActualizado) throws EntidadNoEncontradaException {
+        Pedido p = buscarPorId(pedidoActualizado.getId());
+        int index = pedidos.indexOf(p);
+        pedidos.set(index, pedidoActualizado);
+    }
+    
     public Pedido buscarPorId(Long id) throws EntidadNoEncontradaException {
         for (Pedido p : pedidos) {
             // Validamos que no esté eliminado (baja lógica)
@@ -35,7 +52,8 @@ public class PedidoService {
         throw new EntidadNoEncontradaException("Error: No se encontró un pedido activo con ID " + id);
     }
 
-    public void eliminarLogico(Long id) throws EntidadNoEncontradaException {
+    // Elimina un pedido de la lista
+    public void eliminar(Long id) throws EntidadNoEncontradaException {
         // 1. Buscamos el objeto. Si no existe, lanza la excepción que creamos
         Pedido p = buscarPorId(id);
         // 2. Marcamos el pedido como eliminado
@@ -45,28 +63,6 @@ public class PedidoService {
             detalle.setEliminado(true);
         }
         System.out.println("Pedido #" + id + " eliminado correctamente.");
-    }
-    
-    public List<Pedido> listarActivos() {
-        List<Pedido> activos = new ArrayList<>();
-        for (Pedido p : pedidos) {
-            if (!p.isEliminado()) {
-                activos.add(p);
-            }
-        }
-        return activos;
-    }
-    
-    // Si ocurre una excepción al agregar un detalle, se captura el error y se cancela la creación
-    public void agregarDetalle(Pedido pedido, Producto producto, int cantidad) throws StockInsuficienteException {
-        //1. Validar regla de negocio antes de tocar nada
-        if (producto.getStock() < cantidad) {
-            throw new StockInsuficienteException("No hay stock suficiente para el producto: " + producto.getNombre());
-        }
-        // 2. Si pasó la validación, procedemos
-        pedido.addDetallePedido(cantidad, producto);
-        // 3. Descontar stock (importante para mantener coherencia en memoria)
-        producto.setStock(producto.getStock() - cantidad);
     }
     
 }

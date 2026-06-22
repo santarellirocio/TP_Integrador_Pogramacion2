@@ -10,12 +10,18 @@ import src.enums.Estado;
 import src.enums.FormaPago;
 import src.enums.Rol;
 import src.exceptions.StockInsuficienteException;
+import src.services.CategoriaService;
 import src.services.PedidoService;
+import src.services.ProductoService;
+import src.services.UsuarioService;
+
 
 
 public class DataLoader {
-    // Metodo para cargar los datos
-    public static void cargarDatos(PedidoService pedidoService) throws StockInsuficienteException {
+    // Metodo que recibe los servicios para cargar datos iniciales en ellos
+    public void cargarDatos(CategoriaService catService, ProductoService prodService, UsuarioService userService, 
+            PedidoService pedidoService) throws StockInsuficienteException {
+        // Creamos y guardamos datos de prueba para no empezar de cero
         // --- 1. CATEGORIAS ---
         Categoria bebidas = new Categoria(1L, "Bebidas", "Bebidas frías y calientes");
         Categoria hamburguesas = new Categoria(2L, "Hamburguesas", "Hamburguesas artesanales");
@@ -43,21 +49,21 @@ public class DataLoader {
         pedido1.addDetallePedido(2, coca);
         pedido1.addDetallePedido(1, clasica);
         pedido1.addDetallePedido(3, flan);
-        pedidoService.guardar(pedido1);
+        pedidoService.crear(pedido1);
 
         pedido2.addDetallePedido(1, agua);
         pedido2.addDetallePedido(2, doble);
         pedido2.addDetallePedido(1, brownie);
-        pedidoService.guardar(pedido2);
+        pedidoService.crear(pedido2);
 
         pedido3.addDetallePedido(2, coca);
         pedido3.addDetallePedido(1, doble);
         pedido3.addDetallePedido(2, brownie);
-        pedidoService.guardar(pedido3);
+        pedidoService.crear(pedido3);
 
         pedido4.addDetallePedido(3, agua);
         pedido4.addDetallePedido(1, clasica);
         pedido4.addDetallePedido(2, flan);
-        pedidoService.guardar(pedido4);
+        pedidoService.crear(pedido4);
     }
 }

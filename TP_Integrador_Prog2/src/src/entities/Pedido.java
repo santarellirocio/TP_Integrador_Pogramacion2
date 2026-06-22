@@ -1,42 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.entities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import src.enums.Estado;
 import src.enums.FormaPago;
 import src.exceptions.StockInsuficienteException;
 import src.interfaces.Calculable;
 
-/**
- *
- * @author santa
- */
+
 public class Pedido extends Base implements Calculable {
 
     // Atributos
-
     private LocalDate fecha;
     private Estado estado;
     private Double total;
     private FormaPago formaPago;
-    private List<DetallePedido> detalles;
+    private List<DetallePedido> detalles;//composicion - relacion unidireccional 1:N - un pedido contiene muchos detalles de pedido
     private Usuario usuario;
 
     // Constructor
-    public Pedido(Long id, LocalDate fecha, Estado estado, FormaPago formaPago, Usuario usuario) {
+    public Pedido(Long id, Estado estado, FormaPago formaPago, Usuario usuario) {
         super(id); // La llamada a super() debe ser la primera instrucción del constructor.
-        this.fecha = fecha;
-        this.estado = estado;
-        this.formaPago = formaPago;
-        this.usuario = usuario;
-        this.total = 0.0;
+        this.fecha = LocalDate.now();
+        setEstado(estado);
+        setFormaPago(formaPago);
+        setUsuario(usuario);
         this.detalles = new ArrayList<>();
     }
 
@@ -64,6 +54,29 @@ public class Pedido extends Base implements Calculable {
     public FormaPago getFormaPago() {
         return formaPago;
     }
+    
+    //setters
+
+    public void setEstado(Estado estado) {
+        if (estado == null) {
+            throw new IllegalArgumentException("Estado inválido");
+        }
+        this.estado = estado;
+    }
+
+    public void setFormaPago(FormaPago formaPago) {
+         if (formaPago == null){
+            throw new IllegalArgumentException("forma de pago invalida");
+        }
+        this.formaPago = formaPago;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
+    
     
     // Sobrescritura del método de la interface
     // Calcula el total sumando los subtotales de cada detalle

@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 import src.enums.Rol;
 
-/**
- *
- * @author santa
- */
 public class Usuario extends Base {
 
     // Atributos
@@ -26,14 +19,59 @@ public class Usuario extends Base {
     // Constructor
     public Usuario(Long id, String nombre, String apellido, String mail, String celular, String contrasenia, Rol rol) {
         super(id); // La llamada a super() debe ser la primera instrucción del constructor.
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.mail = mail;
-        this.celular = celular;
-        this.contrasenia = contrasenia;
-        this.rol = rol;
+        setNombre(nombre);
+        setApellido(apellido);
+        setMail(mail);
+        setCelular(celular);
+        setContrasenia(contrasenia);
+        setRol(rol);
         this.pedidos = new ArrayList<>();
     }
+
+    //setters
+
+    public void setNombre(String nombre) {
+         if (nombre == null){
+            throw new IllegalArgumentException("el nombre de usuario no puede ser nulo");
+        }
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        if (apellido == null){
+            throw new IllegalArgumentException("el apellido de usuario no puede ser nulo");
+        }
+        this.apellido = apellido;
+    }
+
+    public void setMail(String mail) {
+        if (mail== null){
+            throw new IllegalArgumentException("el mail de usuario no puede ser nulo");
+        }
+        this.mail = mail;
+    }
+
+    public void setCelular(String celular) {
+        if (celular== null){
+            throw new IllegalArgumentException("se requiere numero de celular del ususario");
+        }
+        this.celular = celular;
+    }
+
+    public void setContrasenia(String contrasenia) {
+        if (contrasenia== null){
+            throw new IllegalArgumentException("la contraseña no puede ser nula");
+        }
+        this.contrasenia = contrasenia;
+    }
+
+    public void setRol(Rol rol) {
+        if (rol == null){
+            throw new IllegalArgumentException("el rol no puede ser nulo");
+        }
+        this.rol = rol;
+    }
+       
 
     // Getters
     public String getNombre() {
@@ -58,7 +96,14 @@ public class Usuario extends Base {
     
     // Metodo para añadir pedidos
     public void agregarPedido(Pedido pedido) {
-        pedidos.add(pedido);
+        //validacion
+        if (pedido == null){
+            throw new IllegalArgumentException ("El pedido no puede ser nulo");
+        }
+        //evitar duplicados
+        if (!pedidos.contains(pedido)){
+            pedidos.add(pedido);
+        }
     }
     
     // Sobrescritura e Implementación obligatoria del método abstracto toString() heredado de Base.

@@ -1,28 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author santa
- */
+
 public class Categoria extends Base {
 
     // Atributos
     private String nombre;
     private String descripcion;
-    private List<Producto> productos;
+    private List<Producto> productos;// agregacion- relacion 1:N - una categoria tiene muchos productos
 
     // Constructor
     public Categoria(Long id, String nombre, String descripcion) {
         super(id);  // La llamada a super() debe ser la primera instrucción del constructor.
-        this.nombre = nombre;
-        this.descripcion = descripcion;
+        setNombre(nombre);
+        setDescripcion(descripcion);
         this.productos = new ArrayList<>();
     }
 
@@ -32,6 +26,9 @@ public class Categoria extends Base {
     }
 
     public void setNombre(String nombre) {
+        if(nombre == null){
+            throw new IllegalArgumentException("el nombre de la categoria no puede ser nulo");
+        }
         this.nombre = nombre;
     }
 
@@ -40,6 +37,9 @@ public class Categoria extends Base {
     }
 
     public void setDescripcion(String descripcion) {
+        if (descripcion == null){
+            throw new IllegalArgumentException("la descripcion no puede ser nula");
+        }
         this.descripcion = descripcion;
     }
 
@@ -47,8 +47,10 @@ public class Categoria extends Base {
         return productos;
     }
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void setProductos(Producto producto) {
+      if(producto != null && !productos.contains(producto)){
+            productos.add(producto);
+        }   
     }
 
     // Metodo para añadir productos

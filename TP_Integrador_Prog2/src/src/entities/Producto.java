@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.entities;
 
-/**
- *
- * @author santa
- */
 public class Producto extends Base {
 
     // Atributos
@@ -30,13 +23,13 @@ public class Producto extends Base {
                     Categoria categoria) {
 
         super(id); // La llamada a super() debe ser la primera instrucción del constructor.
-        this.nombre = nombre;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.stock = stock;
-        this.imagen = imagen;
-        this.disponible = disponible;
-        this.categoria = categoria;
+        setNombre(nombre);
+        setPrecio(precio);
+        setDescripcion(descripcion);
+        setStock(stock);
+        setImagen(imagen);
+        this.disponible = true;
+        setCategoria(categoria);
     }
 
     // Getters y Setters
@@ -45,6 +38,9 @@ public class Producto extends Base {
     }
 
     public void setNombre(String nombre) {
+        if (nombre == null){
+            throw new IllegalArgumentException("El nombre del producto no puede ser nulo");
+        }
         this.nombre = nombre;
     }
 
@@ -53,6 +49,9 @@ public class Producto extends Base {
     }
 
     public void setPrecio(Double precio) {
+        if (precio < 0){
+            throw new IllegalArgumentException("el precio del producto no puede ser negativo");
+        }
         this.precio = precio;
     }
 
@@ -61,6 +60,9 @@ public class Producto extends Base {
     }
 
     public void setDescripcion(String descripcion) {
+        if(descripcion == null){
+            throw new IllegalArgumentException("la descripcion del producto no puede ser nula");
+        }
         this.descripcion = descripcion;
     }
 
@@ -69,6 +71,9 @@ public class Producto extends Base {
     }
 
     public void setStock(int stock) {
+        if (stock <0){
+            throw new IllegalArgumentException("el stock no puede ser valor negativo");
+        }
         this.stock = stock;
     }
 
@@ -81,7 +86,7 @@ public class Producto extends Base {
     }
 
     public boolean isDisponible() {
-        return disponible;
+        return stock > 0;
     }
 
     public void setDisponible(boolean disponible) {

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.menu;
 
 import java.time.LocalDate;
@@ -15,10 +12,7 @@ import src.enums.Rol;
 import src.exceptions.StockInsuficienteException;
 import src.services.PedidoService;
 
-/**
- *
- * @author santa
- */
+
 public class DataLoader {
     // Metodo para cargar los datos
     public static void cargarDatos(PedidoService pedidoService) throws StockInsuficienteException {
@@ -40,10 +34,10 @@ public class DataLoader {
         Usuario usuario = new Usuario(2L, "Maria", "Gomez", "maria.gomez@hotmail.com", "+549358101224", "wxyz6789", Rol.USUARIO);
 
         // --- 4. PEDIDOS ---
-        Pedido pedido1 = new Pedido(1L, LocalDate.now(), Estado.PENDIENTE, FormaPago.TARJETA, admin);
-        Pedido pedido2 = new Pedido(2L, LocalDate.now(), Estado.CONFIRMADO, FormaPago.EFECTIVO, admin);
-        Pedido pedido3 = new Pedido(3L, LocalDate.now(), Estado.TERMINADO, FormaPago.TRANSFERENCIA, usuario);
-        Pedido pedido4 = new Pedido(4L, LocalDate.now(), Estado.PENDIENTE, FormaPago.TARJETA, usuario);
+        Pedido pedido1 = new Pedido(1L, Estado.PENDIENTE, FormaPago.TARJETA, admin);
+        Pedido pedido2 = new Pedido(2L, Estado.CONFIRMADO, FormaPago.EFECTIVO, admin);
+        Pedido pedido3 = new Pedido(3L, Estado.TERMINADO, FormaPago.TRANSFERENCIA, usuario);
+        Pedido pedido4 = new Pedido(4L, Estado.PENDIENTE, FormaPago.TARJETA, usuario);
 
         // --- 5. DETALLES Y GUARDADO ---
         pedido1.addDetallePedido(2, coca);

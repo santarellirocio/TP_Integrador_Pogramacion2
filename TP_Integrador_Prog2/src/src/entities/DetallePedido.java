@@ -1,13 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.entities;
 
-/**
- *
- * @author santa
- */
 public class DetallePedido extends Base {
 
     // Contador privado exclusivo para esta clase
@@ -22,8 +15,8 @@ public class DetallePedido extends Base {
     public DetallePedido(int cantidad, Producto producto) {
         // Asignamos el ID autoincrementado automáticamente
         super(contador++); // La llamada a super() debe ser la primera instrucción del constructor.
-        this.cantidad = cantidad;
-        this.producto = producto;
+        setCantidad(cantidad);
+        setProducto(producto);
         this.subtotal = calcularSubtotal();
     }
 
@@ -34,6 +27,9 @@ public class DetallePedido extends Base {
     }
 
     public void setCantidad(int cantidad) {
+        if (cantidad < 0){
+            throw new IllegalArgumentException ("la cantidad no puede ser negativa");
+        }
         this.cantidad = cantidad;
         this.subtotal = calcularSubtotal();
     }
@@ -47,6 +43,9 @@ public class DetallePedido extends Base {
     }
 
     public void setProducto(Producto producto) {
+        if (producto == null) {
+        throw new IllegalArgumentException("El producto no puede ser null.");
+    }
         this.producto = producto;
         this.subtotal = calcularSubtotal();
     }

@@ -59,6 +59,10 @@ public class AppMenu {
                 case "2" -> menuProductos();  // Llamas al submenú Productos
                 case "3" -> menuUsuarios();   // Llamas al submenú Usuarios
                 case "4" -> menuPedidos();    // Llamas al submenú Pedidos
+                case "0" -> {
+                    System.out.println("Cerrando sistema...");
+                    activo = false;
+                }   
             }
         }
     }
@@ -151,22 +155,36 @@ public class AppMenu {
                 }
                 
             }
-            case "3" -> { 
-                System.out.print("ID del producto a editar: "); Long id = Long.parseLong(scanner.nextLine());
-                Producto p = productoService.buscarPorId(id);
-                System.out.print("Nuevo nombre: "); p.setNombre(scanner.nextLine());
-                productoService.editar(p);
+            case "3" -> {
+                try {
+                    System.out.print("ID del producto a editar: "); Long id = Long.parseLong(scanner.nextLine());
+                    Producto p = productoService.buscarPorId(id);
+                    System.out.print("Nuevo nombre: "); p.setNombre(scanner.nextLine());
+                    productoService.editar(p);
+                } catch (NumberFormatException e){
+                    System.out.println("Error: el id debe ser un numero");
+                } catch (EntidadNoEncontradaException e) {
+                    System.out.println("Error " + e.getMessage());
+                }
             }
+  
             case "4" -> {
-                System.out.print("ID a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
-                productoService.eliminar(id);
+                try {
+                    System.out.print("ID a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
+                    productoService.eliminar(id);
+                } catch (NumberFormatException e){
+                    System.out.println("Error: el id debe ser un numero");
+                } catch (EntidadNoEncontradaException e) {
+                    System.out.println("Error " + e.getMessage());
+                }
             }
+  
             case "0" -> { return; } // Vuelve al menú principal
         }
     }
 
     private void menuUsuarios() throws Exception {
-        System.out.println("\n--- GESTIÓN DE PRODUCTOS ---");
+        System.out.println("\n--- GESTIÓN DE USUARIOS ---");
         System.out.println("1. Listar\n2. Crear\n3. Editar \n4. Eliminar\n0. Salir");
         String op = scanner.nextLine();
         switch (op) {
@@ -189,65 +207,102 @@ public class AppMenu {
                 Long nuevoId = (long) usuarioService.listar().size() + 1;
                 usuarioService.crear(new Usuario(nuevoId, nombre, apellido, mail, cel, contra, rolSeleccionado));
             }
-            case "3" -> { 
-                System.out.print("ID de usuario a editar: "); Long id = Long.parseLong(scanner.nextLine());
-                Usuario u = usuarioService.buscarPorId(id);
-                System.out.print("Nuevo nombre: "); u.setNombre(scanner.nextLine());
-                usuarioService.editar(u);
+            case "3" -> {
+                try{
+                    System.out.print("ID de usuario a editar: "); Long id = Long.parseLong(scanner.nextLine());
+                    Usuario u = usuarioService.buscarPorId(id);
+                    System.out.print("Nuevo nombre: "); u.setNombre(scanner.nextLine());
+                    usuarioService.editar(u);
+                } catch (NumberFormatException e){
+                    System.out.println("Error: el id debe ser un numero");
+                } catch (EntidadNoEncontradaException e) {
+                    System.out.println("Error " + e.getMessage());
+                }
             }
+  
             case "4" -> {
-                System.out.print("ID a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
-                usuarioService.eliminar(id);
+                try {
+                    System.out.print("ID a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
+                    usuarioService.eliminar(id);
+                } catch (NumberFormatException e){
+                    System.out.println("Error: el id debe ser un numero");
+                } catch (EntidadNoEncontradaException e) {
+                    System.out.println("Error " + e.getMessage());
+                }
             }
+  
             case "0" -> { return; } // Vuelve al menú principal
         }
     }
 
     private void menuPedidos() throws EntidadNoEncontradaException {
-        System.out.println("\n--- GESTIÓN DE PRODUCTOS ---");
+        System.out.println("\n--- GESTIÓN DE PEDIDOS ---");
         System.out.println("1. Listar\n2. Crear\n3. Editar \n4. Eliminar\n0. Salir");
         String op = scanner.nextLine();
         switch (op) {
             case "1" -> pedidoService.listar().forEach(System.out::println);
             case "2" -> {
-                System.out.print("ID de Usuario: "); 
-                Long uId = Long.parseLong(scanner.nextLine());
-                Usuario u = usuarioService.buscarPorId(uId);
-                Pedido nuevo = new Pedido((long) pedidoService.listar().size() + 1, Estado.PENDIENTE, FormaPago.EFECTIVO, u);
-                // Bucle para agregar varios productos
-                boolean agregando = true;
-                while (agregando) {
-                    System.out.print("ID de producto a agregar: ");
-                    Long prodId = Long.parseLong(scanner.nextLine());
-                    Producto p = productoService.buscarPorId(prodId);
-
-                    System.out.print("Cantidad: ");
-                    int cant = Integer.parseInt(scanner.nextLine());
-
                     try {
-                        // Llamamos al método directamente sobre el objeto 'nuevo'
-                        nuevo.addDetallePedido(cant, p); 
-                        System.out.println("Producto agregado al pedido.");
-                    } catch (StockInsuficienteException e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
+                    System.out.print("ID de Usuario: "); 
+                    Long uId = Long.parseLong(scanner.nextLine());
+                    Usuario u = usuarioService.buscarPorId(uId);
+                    Pedido nuevo = new Pedido((long) pedidoService.listar().size() + 1, Estado.PENDIENTE, FormaPago.EFECTIVO, u);
+                    // Bucle para agregar varios productos
+                    boolean agregando = true;
+                    while (agregando) {
+                        System.out.print("ID de producto a agregar: ");
+                        Long prodId = Long.parseLong(scanner.nextLine());
+                        Producto p = productoService.buscarPorId(prodId);
 
-                    System.out.print("¿Agregar otro producto? (s/n): ");
-                    agregando = scanner.nextLine().equalsIgnoreCase("s");
-                }
-                pedidoService.crear(nuevo);
-                System.out.println("Pedido creado con éxito.");
-            }
+                        System.out.print("Cantidad: ");
+                        int cant = Integer.parseInt(scanner.nextLine());
+
+                        try {
+                            // Llamamos al método directamente sobre el objeto 'nuevo'
+                            nuevo.addDetallePedido(cant, p); 
+                            System.out.println("Producto agregado al pedido.");
+                        } catch (StockInsuficienteException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+
+                        System.out.print("¿Agregar otro producto? (s/n): ");
+                        agregando = scanner.nextLine().equalsIgnoreCase("s");
+                    }
+                    pedidoService.crear(nuevo);
+                    System.out.println("Pedido creado con éxito.");
+                } catch (NumberFormatException e){
+                     System.out.println("Error: Por favor, ingrese un número válido para los IDs o cantidades.");
+                } catch (EntidadNoEncontradaException e) {
+                    System.out.println("Error: " + e.getMessage());
+    }
+}
+                    
+                
+                    
             case "3" -> { // EDITAR (Cambiar estado, por ejemplo)
-                System.out.print("ID de pedido a editar: "); Long id = Long.parseLong(scanner.nextLine());
-                Pedido p = pedidoService.buscarPorId(id);
-                p.setEstado(Estado.CONFIRMADO); // Ejemplo de edición
-                pedidoService.editar(p);
+                    try{
+                        System.out.print("ID de pedido a editar: "); Long id = Long.parseLong(scanner.nextLine());
+                        Pedido p = pedidoService.buscarPorId(id);
+                        p.setEstado(Estado.CONFIRMADO); // Ejemplo de edición
+                        pedidoService.editar(p);
+                } catch (NumberFormatException e){
+                    System.out.println("Error: el id debe ser un numero");
+                } catch (EntidadNoEncontradaException e) {
+                    System.out.println("Error " + e.getMessage());
+                }
             }
+  
             case "4" -> {
-                System.out.print("ID de pedido a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
-                pedidoService.eliminar(id);
+                try{
+                    System.out.print("ID de pedido a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
+                    pedidoService.eliminar(id);
+            }  catch (NumberFormatException e){
+                System.out.println("Error: el id debe ser un numero");
+            } catch (EntidadNoEncontradaException e) {
+                System.out.println("Error " + e.getMessage());
+                }
             }
+  
             case "0" -> { return; } // Vuelve al menú principal
         }
     }

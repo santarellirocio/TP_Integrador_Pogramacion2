@@ -1,21 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.services;
 
 import java.util.ArrayList;
 import java.util.List;
 import src.entities.DetallePedido;
 import src.entities.Pedido;
-import src.entities.Producto;
 import src.exceptions.EntidadNoEncontradaException;
-import src.exceptions.StockInsuficienteException;
 
-/**
- *
- * @author santa
- */
+
 public class PedidoService {
     // Aquí es donde "vive" la base de datos en memoria
     private List<Pedido> pedidos = new ArrayList<>();

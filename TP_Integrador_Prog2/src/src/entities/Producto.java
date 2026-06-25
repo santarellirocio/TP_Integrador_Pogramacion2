@@ -100,6 +100,10 @@ public class Producto extends Base {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+    
+    public String resumen() {
+    return "ID: " + getId() + " - Nombre: " + nombre;
+}
 
     // Sobrescritura e Implementación obligatoria del método abstracto toString() heredado de Base.
     @Override

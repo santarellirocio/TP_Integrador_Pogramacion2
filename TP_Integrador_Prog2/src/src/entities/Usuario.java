@@ -108,6 +108,9 @@ public class Usuario extends Base {
         }
     }
     
+    public String resumen() {
+    return "ID: " + getId() + apellido + " " + nombre;}
+    
     // Sobrescritura e Implementación obligatoria del método abstracto toString() heredado de Base.
     @Override
     public String toString() {

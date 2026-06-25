@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package src;
 
 import src.exceptions.StockInsuficienteException;
@@ -13,10 +10,7 @@ import src.services.ProductoService;
 import src.services.UsuarioService;
 
 
-/**
- *
- * @author santa
- */
+
 public class Main {
 
     public static void main(String[] args) throws StockInsuficienteException, Exception {
@@ -29,7 +23,7 @@ public class Main {
         // 2. Cargamos datos iniciales (opcional, pero ayuda a testear)
         DataLoader loader = new DataLoader();
         // Opcional: puedes llamar a cargarDatos aquí si quieres tener datos al arrancar
-        
+        loader.cargarDatos(catService, prodService, userService, pedidoService);
         
         // 3. Lanzamos el menú pasándole todos los servicios inyectados
         AppMenu menu = new AppMenu(catService, prodService, userService, pedidoService);

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.services;
 
 import java.util.ArrayList;
@@ -9,10 +6,7 @@ import java.util.List;
 import src.entities.Producto;
 import src.exceptions.EntidadNoEncontradaException;
 
-/**
- *
- * @author santa
- */
+
 public class ProductoService {
     // Lista para almacenar los productos en memoria
     private List<Producto> productos = new ArrayList<>();

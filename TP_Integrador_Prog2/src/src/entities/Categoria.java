@@ -57,6 +57,10 @@ public class Categoria extends Base {
     public void agregarProducto(Producto producto) {
         productos.add(producto);
     }
+    
+    public String resumen() {
+    return "ID: " + getId() + " - Nombre: " + nombre;
+}
 
     // Sobrescritura e Implementación obligatoria del método abstracto toString() heredado de Base.
     @Override

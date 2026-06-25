@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.services;
 
 import java.util.ArrayList;
@@ -9,10 +6,7 @@ import java.util.List;
 import src.entities.Usuario;
 import src.exceptions.EntidadNoEncontradaException;
 
-/**
- *
- * @author santa
- */
+
 public class UsuarioService {
     
     private List<Usuario> usuarios = new ArrayList<>();
@@ -30,7 +24,7 @@ public class UsuarioService {
     public void crear(Usuario u) throws Exception {
         // Validación de unicidad de email
         for (Usuario usuario : usuarios) {
-            if (u.getMail().equalsIgnoreCase(u.getMail())) {
+            if (usuario.getMail().equalsIgnoreCase(u.getMail())) {
                 throw new Exception("Ya existe un usuario con el email: " + u.getMail());
             }
         }

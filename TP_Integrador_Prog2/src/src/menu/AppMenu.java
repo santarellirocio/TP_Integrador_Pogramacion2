@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package src.menu;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 import src.entities.Categoria;
@@ -21,10 +17,7 @@ import src.services.PedidoService;
 import src.services.ProductoService;
 import src.services.UsuarioService;
 
-/**
- *
- * @author santa
- */
+
 public class AppMenu {
     private Scanner scanner = new Scanner(System.in);
     private CategoriaService categoriaService;
@@ -62,7 +55,8 @@ public class AppMenu {
                 case "0" -> {
                     System.out.println("Cerrando sistema...");
                     activo = false;
-                }   
+                }  
+                default -> System.out.println("Opción inválida. Intente nuevamente."); //si se ingresa un valor fuera de rango  
             }
         }
     }
@@ -92,7 +86,8 @@ public class AppMenu {
                 System.out.println("¡Categoría creada correctamente!");
                 }
             case "3" -> {
-                System.out.print("Ingrese el ID de la categoría a editar: ");
+               categoriaService.listar().forEach(c ->System.out.println(c.resumen()));                
+                System.out.println("Ingrese el ID de la categoría a editar: ");
                 try {
                     Long id = Long.parseLong(scanner.nextLine());
                     Categoria cat = categoriaService.buscarPorId(id); // Buscamos primero
@@ -108,7 +103,8 @@ public class AppMenu {
                 }
             }
             case "4" -> {
-                System.out.print("Ingrese el ID de la categoría a eliminar: ");
+                System.out.println("Ingrese el ID de la categoría a eliminar: ");
+                categoriaService.listar().forEach(c ->System.out.println(c.resumen()));
                 try {
                     Long id = Long.parseLong(scanner.nextLine());
                     categoriaService.eliminar(id);
@@ -118,6 +114,7 @@ public class AppMenu {
                 }
             }
             case "0" -> { return; } // Vuelve al menú principal
+            default -> System.out.println("Opción inválida. Intente nuevamente.");
         }
     }
 
@@ -137,7 +134,7 @@ public class AppMenu {
                     System.out.println("Categorías disponibles:");
                     categoriaService.listar().forEach(System.out::println);
 
-                    System.out.print("ID de Categoria: "); 
+                    System.out.print("ingrese el ID de la Categoria a la que agregará el producto: "); 
                     Long catId = Long.parseLong(scanner.nextLine());
 
                     // Buscamos la categoría
@@ -150,6 +147,8 @@ public class AppMenu {
                     System.out.println("¡Producto creado!");
                 } catch (NumberFormatException e) {
                     System.out.println("Error: Por favor ingrese números válidos en precio/stock/ID.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
                 } catch (EntidadNoEncontradaException e) {
                     System.out.println("Error: " + e.getMessage());
                 }
@@ -157,9 +156,12 @@ public class AppMenu {
             }
             case "3" -> {
                 try {
-                    System.out.print("ID del producto a editar: "); Long id = Long.parseLong(scanner.nextLine());
+                    productoService.listar().forEach(c ->System.out.println(c.resumen()));
+                    System.out.print("ingrese ID del producto a editar: ");                    
+                    Long id = Long.parseLong(scanner.nextLine());
                     Producto p = productoService.buscarPorId(id);
-                    System.out.print("Nuevo nombre: "); p.setNombre(scanner.nextLine());
+                    System.out.print("Nuevo nombre: "); 
+                    p.setNombre(scanner.nextLine());
                     productoService.editar(p);
                 } catch (NumberFormatException e){
                     System.out.println("Error: el id debe ser un numero");
@@ -170,7 +172,9 @@ public class AppMenu {
   
             case "4" -> {
                 try {
-                    System.out.print("ID a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
+                    productoService.listar().forEach(c ->System.out.println(c.resumen()));
+                    System.out.print("ingrese ID de producto a eliminar: "); 
+                    Long id = Long.parseLong(scanner.nextLine());
                     productoService.eliminar(id);
                 } catch (NumberFormatException e){
                     System.out.println("Error: el id debe ser un numero");
@@ -206,13 +210,28 @@ public class AppMenu {
                 Rol rolSeleccionado = pedirRol();
                 Long nuevoId = (long) usuarioService.listar().size() + 1;
                 usuarioService.crear(new Usuario(nuevoId, nombre, apellido, mail, cel, contra, rolSeleccionado));
+                System.out.println("Usuario creado con exito!");
             }
             case "3" -> {
+                usuarioService.listar().forEach(c ->System.out.println(c.resumen()));
                 try{
-                    System.out.print("ID de usuario a editar: "); Long id = Long.parseLong(scanner.nextLine());
+                    System.out.print("ID de usuario a editar: "); 
+                    Long id = Long.parseLong(scanner.nextLine());
                     Usuario u = usuarioService.buscarPorId(id);
-                    System.out.print("Nuevo nombre: "); u.setNombre(scanner.nextLine());
+                    System.out.print("Nuevo nombre: "); 
+                    u.setNombre(scanner.nextLine());                    
+                    System.out.print("Nuevo apellido: "); 
+                    u.setApellido(scanner.nextLine());
+                    System.out.print("Nuevo Email: "); 
+                    u.setMail(scanner.nextLine());
+                    System.out.print("Nuevo celular: "); 
+                    u.setCelular(scanner.nextLine());
+                    System.out.print("Nueva contrasenia: "); 
+                    u.setContrasenia(scanner.nextLine());
+                    Rol rolSeleccionado = pedirRol();
+                    
                     usuarioService.editar(u);
+                    System.out.println("usuario editado correctamente");
                 } catch (NumberFormatException e){
                     System.out.println("Error: el id debe ser un numero");
                 } catch (EntidadNoEncontradaException e) {
@@ -243,7 +262,7 @@ public class AppMenu {
             case "1" -> pedidoService.listar().forEach(System.out::println);
             case "2" -> {
                     try {
-                    System.out.print("ID de Usuario: "); 
+                    System.out.print("Ingrese ID de Usuario responsable del pedido: "); 
                     Long uId = Long.parseLong(scanner.nextLine());
                     Usuario u = usuarioService.buscarPorId(uId);
                     Pedido nuevo = new Pedido((long) pedidoService.listar().size() + 1, Estado.PENDIENTE, FormaPago.EFECTIVO, u);
@@ -274,17 +293,23 @@ public class AppMenu {
                      System.out.println("Error: Por favor, ingrese un número válido para los IDs o cantidades.");
                 } catch (EntidadNoEncontradaException e) {
                     System.out.println("Error: " + e.getMessage());
-    }
-}
-                    
-                
-                    
-            case "3" -> { // EDITAR (Cambiar estado, por ejemplo)
+                }
+                }        
+                                    
+            case "3" -> { // EDITAR (Cambiar estado o forma de pago)
                     try{
-                        System.out.print("ID de pedido a editar: "); Long id = Long.parseLong(scanner.nextLine());
-                        Pedido p = pedidoService.buscarPorId(id);
-                        p.setEstado(Estado.CONFIRMADO); // Ejemplo de edición
+                        System.out.print("ingrese ID de pedido a editar: "); 
+                        Long id = Long.parseLong(scanner.nextLine());
+                        Pedido p = pedidoService.buscarPorId(id);                        
+                        System.out.println("Se editara el pedido "+ p);
+                        p.setEstado(pedirEstado());                        
                         pedidoService.editar(p);
+                        System.out.println("estado actualizado " + p);
+                        
+                        p.setFormaPago(pedirFormaPago());
+                        pedidoService.editar(p);
+                        System.out.println("forma de pago actualizada " + p);
+                        
                 } catch (NumberFormatException e){
                     System.out.println("Error: el id debe ser un numero");
                 } catch (EntidadNoEncontradaException e) {
@@ -323,6 +348,48 @@ public class AppMenu {
             System.out.println("Opción inválida, se asignará USUARIO por defecto.");
             yield Rol.USUARIO; // 'yield' es necesario en switch moderno para retornar valor
         }
-    };
+    };    
 }
+    
+    // Metodo asignar el estado del pedido segun las opciones del enum Estado
+   private Estado pedirEstado() {
+    Estado[] estados = Estado.values();
+    while (true) {
+        System.out.println("Seleccione un estado:");
+        for (int i = 0; i < estados.length; i++) {
+            System.out.println((i + 1) + ". " + estados[i]);
+        }
+        try {
+            int opcion = Integer.parseInt(scanner.nextLine());
+            if (opcion >= 1 && opcion <= estados.length) {
+                return estados[opcion - 1];
+            }
+            System.out.println("Opción inválida, ingrese una opcion de 1 a 4");
+        } catch (NumberFormatException e) {
+            System.out.println("Debe ingresar un número.");
+        }
+    }
+}
+    
+    //Metodo para asignar la forma de pago al pedido segun las opciones del enum FormaPago
+    private FormaPago pedirFormaPago(){
+    FormaPago [] abonaCon = FormaPago.values() ;
+    while(true){    
+       System.out.println("Seleccione una forma de pago: ");
+       for (int i= 0 ; i < abonaCon.length; i++){
+           System.out.println((i+1)+ ". " + abonaCon[i] );
+       }
+       try{
+            int opcion= Integer.parseInt(scanner.nextLine());
+            if (opcion >= 1 && opcion <= abonaCon.length){
+            return abonaCon[ opcion - 1 ];    
+            }
+            System.out.println("Opción inválida, ingrese una opcion de 1 a 3");
+        } catch (NumberFormatException e) {
+            System.out.println("Debe ingresar un número.");
+            }       
+        }
+    }
+    
+    
 }

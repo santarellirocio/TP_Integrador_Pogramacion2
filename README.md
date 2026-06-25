@@ -92,8 +92,24 @@ Tipos controlados del sistema:
 - Git
 - GitHub
 
-## Ejecución
+## Requisitos
 
-Ejecutar la clase:
+Para ejecutar el proyecto es necesario tener instalado:
 
-src.Main
+* Java JDK 17 o superior.
+* NetBeans IDE (o cualquier IDE compatible con proyectos Java).
+
+## Ejecución del proyecto
+
+1. Clonar el repositorio:
+En caso de no tener SSH
+bash
+git clone https://github.com/santarellirocio/TP_Integrador_Pogramacion2.git
+
+En caso de tener SSH
+bash
+git clone https://github.com/santarellirocio/TP_Integrador_Pogramacion2.git
+
+2. Abrir el proyecto en NetBeans (o en cualquier IDE compatible con Java).
+
+3. Ejecutar la clase Main.java.

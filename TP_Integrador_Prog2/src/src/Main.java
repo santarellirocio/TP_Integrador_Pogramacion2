@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws StockInsuficienteException, Exception {
         // 1. Creamos los servicios (la base de datos en memoria)
         CategoriaService catService = new CategoriaService();
-        ProductoService prodService = new ProductoService();
+        ProductoService prodService = new ProductoService(catService);
         UsuarioService userService = new UsuarioService();
         PedidoService pedidoService = new PedidoService();
 

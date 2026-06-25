@@ -70,6 +70,7 @@ public class AppMenu {
             case "1" -> categoriaService.listar().forEach(System.out::println);
             case "2" -> { 
                 System.out.println("--- NUEVA CATEGORIA ---");
+                try{                                   
                 System.out.print("Nombre: ");
                 String nombre = scanner.nextLine();
                 System.out.print("Descripcion: ");
@@ -84,24 +85,24 @@ public class AppMenu {
                 // Lo guardamos en el servicio
                 categoriaService.crear(nueva);
                 System.out.println("¡Categoría creada correctamente!");
-                }
+                }catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }}
             case "3" -> {
-               categoriaService.listar().forEach(c ->System.out.println(c.resumen()));                
-                System.out.println("Ingrese el ID de la categoría a editar: ");
+                categoriaService.listar().forEach(c -> System.out.println(c.resumen()));
                 try {
-                    Long id = Long.parseLong(scanner.nextLine());
-                    Categoria cat = categoriaService.buscarPorId(id); // Buscamos primero
-
-                    System.out.print("Ingrese el nuevo nombre: ");
-                    String nuevoNombre = scanner.nextLine();
-
-                    cat.setNombre(nuevoNombre); // Actualizamos el objeto
-                    categoriaService.editar(cat); // Guardamos los cambios
-                    System.out.println("Categoría actualizada.");
+                System.out.print("Ingrese el ID: ");
+                Long id = Long.parseLong(scanner.nextLine());
+                System.out.print("Ingrese el nuevo nombre: ");
+                String nuevoNombre = scanner.nextLine();
+                System.out.print("Ingrese la nueva descripcion: ");
+                String nuevaDescripcion = scanner.nextLine();
+                categoriaService.editar(id, nuevoNombre, nuevaDescripcion);
+                System.out.println("Categoría actualizada.");
                 } catch (Exception e) {
-                    System.out.println("Error al editar: " + e.getMessage());
-                }
+                System.out.println("Error: " + e.getMessage());
             }
+            }            
             case "4" -> {
                 System.out.println("Ingrese el ID de la categoría a eliminar: ");
                 categoriaService.listar().forEach(c ->System.out.println(c.resumen()));
@@ -124,52 +125,43 @@ public class AppMenu {
         String op = scanner.nextLine();
         switch (op) {
             case "1" -> productoService.listar().forEach(System.out::println);
-            case "2" -> { 
+            case "2" -> {
                 try {
-                    System.out.print("Nombre: "); String nombre = scanner.nextLine();
-                    System.out.print("Precio: "); Double precio = Double.parseDouble(scanner.nextLine());
-                    System.out.print("Stock: "); int stock = Integer.parseInt(scanner.nextLine());
-
-                    // Listamos categorías primero para que el usuario sepa qué ID elegir
-                    System.out.println("Categorías disponibles:");
-                    categoriaService.listar().forEach(System.out::println);
-
-                    System.out.print("ingrese el ID de la Categoria a la que agregará el producto: "); 
-                    Long catId = Long.parseLong(scanner.nextLine());
-
-                    // Buscamos la categoría
-                    Categoria cat = categoriaService.buscarPorId(catId); 
-
-                    // Creamos
-                    Long nuevoId = (long) productoService.listar().size() + 1;
-                    productoService.crear(new Producto(nuevoId, nombre, precio, "Desc", stock, "img.jpg", true, cat));
-
-                    System.out.println("¡Producto creado!");
-                } catch (NumberFormatException e) {
-                    System.out.println("Error: Por favor ingrese números válidos en precio/stock/ID.");
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error: " + e.getMessage());
-                } catch (EntidadNoEncontradaException e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-                
+                System.out.print("Nombre: ");
+                String nombre = scanner.nextLine();
+                System.out.print("Precio: ");
+                Double precio = Double.parseDouble(scanner.nextLine());
+                System.out.print("Stock: ");
+                int stock = Integer.parseInt(scanner.nextLine());
+                System.out.println("Categorías disponibles:");
+                categoriaService.listar().forEach(System.out::println);
+                System.out.print("Ingrese el ID de la categoría: ");
+                Long categoriaId = Long.parseLong(scanner.nextLine());
+                productoService.crear(nombre, precio, stock, categoriaId);
+                System.out.println("¡Producto creado!");
+            } catch (NumberFormatException e) {
+                System.out.println("Error: precio, stock o ID inválidos.");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
+        }
             case "3" -> {
                 try {
-                    productoService.listar().forEach(c ->System.out.println(c.resumen()));
-                    System.out.print("ingrese ID del producto a editar: ");                    
-                    Long id = Long.parseLong(scanner.nextLine());
-                    Producto p = productoService.buscarPorId(id);
-                    System.out.print("Nuevo nombre: "); 
-                    p.setNombre(scanner.nextLine());
-                    productoService.editar(p);
-                } catch (NumberFormatException e){
-                    System.out.println("Error: el id debe ser un numero");
-                } catch (EntidadNoEncontradaException e) {
-                    System.out.println("Error " + e.getMessage());
-                }
+                productoService.listar().forEach(p -> System.out.println(p.resumen()));
+                System.out.print("Ingrese ID del producto: ");
+                Long id = Long.parseLong(scanner.nextLine());
+                System.out.print("Nuevo nombre: ");
+                String nombre = scanner.nextLine();
+                productoService.editar(id, nombre);
+                System.out.println("Producto actualizado.");
+            } catch (NumberFormatException e) {
+                System.out.println("Error: el ID debe ser numérico.");
+            } catch (EntidadNoEncontradaException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
             }
-  
+        }  
             case "4" -> {
                 try {
                     productoService.listar().forEach(c ->System.out.println(c.resumen()));

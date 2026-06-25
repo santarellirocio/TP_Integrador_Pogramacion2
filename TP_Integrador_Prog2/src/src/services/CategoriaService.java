@@ -2,6 +2,7 @@
 package src.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import src.entities.Categoria;
 import src.exceptions.EntidadNoEncontradaException;
@@ -13,20 +14,26 @@ public class CategoriaService {
 
     // Devuelve todas las categorías para poder mostrarlas
     public List<Categoria> listar() { 
-        return categorias; 
+        return Collections.unmodifiableList(categorias);
     }
     
     // Agrega una nueva categoría a la lista
     public void crear(Categoria c) { 
+        if (c.getNombre() == null || c.getNombre().isBlank()|| c.getDescripcion() == null || c.getDescripcion().isBlank()) {
+            throw new IllegalArgumentException("se deben completar ambos campos solilcitados");
+    }   
         categorias.add(c); 
     }
     
     // Actualiza la información de una categoria existente
-    public void editar(Categoria categoriaActualizada) throws EntidadNoEncontradaException {
-        Categoria c = buscarPorId(categoriaActualizada.getId());
-        categorias.remove(c);
-        categorias.add(categoriaActualizada);
-    }
+    public void editar(Long id, String nombre, String descripcion)throws EntidadNoEncontradaException {
+        Categoria categoria = buscarPorId(id);
+        if (nombre == null || nombre.isBlank() || descripcion == null || descripcion.isBlank()) {
+            throw new IllegalArgumentException("debe completar todos los campos");
+        }
+        categoria.setNombre(nombre);
+        categoria.setDescripcion(descripcion);
+}
 
     // Método de utilidad para encontrar un elemento por su ID
     public Categoria buscarPorId(Long id) throws EntidadNoEncontradaException {

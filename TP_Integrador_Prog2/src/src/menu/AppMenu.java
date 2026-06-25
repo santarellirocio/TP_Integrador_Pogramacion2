@@ -199,6 +199,12 @@ public class AppMenu {
                 System.out.print("Email: "); String mail = scanner.nextLine();
                 System.out.print("Celular: "); String cel = scanner.nextLine();
                 System.out.print("Contraseña: "); String contra = scanner.nextLine();
+                
+                if (nombre.trim().isEmpty() || apellido.trim().isEmpty() || mail.trim().isEmpty() || cel.trim().isEmpty() || contra.trim().isEmpty()) {
+                    System.out.println("Error: No se puede crear el usuario. Ninguno de los campos puede estar vacío o contener solo espacios.");
+                    return; 
+                }
+                
                 Rol rolSeleccionado = pedirRol();
                 Long nuevoId = (long) usuarioService.listar().size() + 1;
                 usuarioService.crear(new Usuario(nuevoId, nombre, apellido, mail, cel, contra, rolSeleccionado));
@@ -206,21 +212,30 @@ public class AppMenu {
             }
             case "3" -> {
                 usuarioService.listar().forEach(c ->System.out.println(c.resumen()));
-                try{
+                try {
                     System.out.print("ID de usuario a editar: "); 
                     Long id = Long.parseLong(scanner.nextLine());
                     Usuario u = usuarioService.buscarPorId(id);
-                    System.out.print("Nuevo nombre: "); 
-                    u.setNombre(scanner.nextLine());                    
-                    System.out.print("Nuevo apellido: "); 
-                    u.setApellido(scanner.nextLine());
-                    System.out.print("Nuevo Email: "); 
-                    u.setMail(scanner.nextLine());
-                    System.out.print("Nuevo celular: "); 
-                    u.setCelular(scanner.nextLine());
-                    System.out.print("Nueva contrasenia: "); 
-                    u.setContrasenia(scanner.nextLine());
+                    
+                    System.out.print("Nuevo nombre: "); String nuevoNombre = scanner.nextLine();
+                    System.out.print("Nuevo apellido: "); String nuevoApellido = scanner.nextLine();
+                    System.out.print("Nuevo Email: "); String nuevoMail = scanner.nextLine();
+                    System.out.print("Nuevo celular: "); String nuevoCelular = scanner.nextLine();
+                    System.out.print("Nueva contrasenia: "); String nuevaContra = scanner.nextLine();
+                    
+                    if (nuevoNombre.trim().isEmpty() || nuevoApellido.trim().isEmpty() || nuevoMail.trim().isEmpty() || nuevoCelular.trim().isEmpty() || nuevaContra.trim().isEmpty()) {
+                        System.out.println("Error: No se pudieron guardar los cambios. Los nuevos datos no pueden estar vacíos.");
+                        return; 
+                    }
+                    
                     Rol rolSeleccionado = pedirRol();
+                    
+                    u.setNombre(nuevoNombre);                    
+                    u.setApellido(nuevoApellido);
+                    u.setMail(nuevoMail);
+                    u.setCelular(nuevoCelular);
+                    u.setContrasenia(nuevaContra);
+                    u.setRol(rolSeleccionado);
                     
                     usuarioService.editar(u);
                     System.out.println("usuario editado correctamente");
@@ -230,7 +245,6 @@ public class AppMenu {
                     System.out.println("Error " + e.getMessage());
                 }
             }
-  
             case "4" -> {
                 try {
                     System.out.print("ID a eliminar: "); Long id = Long.parseLong(scanner.nextLine());
@@ -241,11 +255,9 @@ public class AppMenu {
                     System.out.println("Error " + e.getMessage());
                 }
             }
-  
-            case "0" -> { return; } // Vuelve al menú principal
+            case "0" -> { return; } 
         }
     }
-
     private void menuPedidos() throws EntidadNoEncontradaException {
         System.out.println("\n--- GESTIÓN DE PEDIDOS ---");
         System.out.println("1. Listar\n2. Crear\n3. Editar \n4. Eliminar\n0. Salir");

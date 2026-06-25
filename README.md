@@ -2,7 +2,7 @@
 
 ## Integrantes
 
-- Jeremías 
+- Jeremías Santiago Garmendia Marchese - Comision 3
 - Pablo Vera - Comisión 13
 - Rocío Santarelli - Comisión 7
 

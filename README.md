@@ -6,6 +6,9 @@
 - Pablo Vera - Comisión 13
 - Rocío Santarelli - Comisión 7
 
+## Link del video explicativo
+https://drive.google.com/drive/folders/1q2AhBqhwfkFuyCPVXP_42UwylrLQ0fGj?zx=hwnxu3541wkc
+
 ## Descripción
 
 Sistema de gestión de pedidos desarrollado en Java para una tienda de alimentos (Food Store).
